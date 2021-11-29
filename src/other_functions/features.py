@@ -86,3 +86,15 @@ def reweight_proba(pi,q1=0.5,r1=0.5):
     w = pi*(q1/r1)
     w /= tot
     return w
+
+def saving(name, model, X_test, X_train, y_train, y_hat_test):
+    joblib.dump(model, 'models/'+name+'.sav')
+
+    # Saving the data that the model uses
+    X_train.to_csv('data/output/'+name+'_X_train.csv', index=False)
+    y_train.to_csv('data/output/'+name+'_y_train.csv', index=False)
+    X_test.to_csv('data/output/'+name+'_X_test.csv', index=False)
+
+    # Step 9: Produce .csv for kaggle testing 
+    test_predictions_submit = pd.DataFrame({"Index": X_test.index, "Cover_Type": y_hat_test})
+    test_predictions_submit.to_csv('data/output/'+name+'_y_hat_test.csv', index = False)
